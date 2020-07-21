@@ -11,4 +11,5 @@ coverage/
 yarn.lock
 .db.js
 .default.json
+default.json
 config
