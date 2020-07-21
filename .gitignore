@@ -9,6 +9,6 @@ dist
 coverage/
 .nyc_output/
 yarn.lock
-.config/db.js
-.config/default.json
-.config
+config/db.js
+config/default.json
+config
