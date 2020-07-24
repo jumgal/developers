@@ -1,7 +1,13 @@
 import React, { Fragment, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-const Register = () => {
+import { connect } from 'react-redux';
+
+import { setAlert } from '../../actions/alert';
+import { registerUser } from '../../actions/auth';
+
+const Register = ({ setAlert, registerUser, isAuthenticated }) => {
 
   const [formData, setFormData] = useState({
     name: '',
@@ -10,7 +16,6 @@ const Register = () => {
     password2: ''
   });
 
-
   const { name, email, password, password2 } = formData;
 
   const handleInputChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,11 +23,15 @@ const Register = () => {
     e.preventDefault();
 
     if (password !== password2) {
-      console.log('passwords do not match')
+      setAlert('passwords do not macth', 'danger')
     } else {
-      console.log('success')
+      registerUser({ name, email, password })
     }
 
+  }
+
+  if (isAuthenticated) {
+    return <Redirect to="/dashboard" />
   }
 
   return (
@@ -31,10 +40,10 @@ const Register = () => {
       <p className="lead"><i className="fas fa-user"></i> Create Your Account</p>
       <form onSubmit={e => handleSubmit(e)} className="form" action="create-profile.html">
         <div className="form-group">
-          <input value={name} onChange={e => handleInputChange(e)} type="text" placeholder="Name" name="name" required />
+          <input value={name} onChange={e => handleInputChange(e)} type="text" placeholder="Name" name="name" autoComplete="on" />
         </div>
         <div className="form-group">
-          <input value={email} onChange={e => handleInputChange(e)} type="email" placeholder="Email Address" name="email" required />
+          <input value={email} onChange={e => handleInputChange(e)} type="email" placeholder="Email Address" name="email" />
           <small className="form-text"
           >This site uses Gravatar so if you want a profile image, use a
             Gravatar email</small
@@ -46,7 +55,6 @@ const Register = () => {
             type="password"
             placeholder="Password"
             name="password"
-            minLength="6"
           />
         </div>
         <div className="form-group">
@@ -56,7 +64,6 @@ const Register = () => {
             type="password"
             placeholder="Confirm Password"
             name="password2"
-            minLength="6"
           />
         </div>
         <input type="submit" className="btn btn-primary" value="Register" />
@@ -69,4 +76,15 @@ const Register = () => {
 }
 
 
-export default Register;
+Register.propTypes = {
+  setAlert: PropTypes.func.isRequired,
+  registerUser: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool
+}
+
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+})
+
+
+export default connect(mapStateToProps, { setAlert, registerUser })(Register);
