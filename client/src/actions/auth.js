@@ -1,5 +1,5 @@
 
-import { REGISTER_SUCCESS, REGISTER_FAIL, USER_LOADED, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT } from '../actions/types.js';
+import { REGISTER_SUCCESS, REGISTER_FAIL, USER_LOADED, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT, CLEAR_PROFILE } from '../actions/types.js';
 import { setAlert } from './alert'
 import axios from 'axios';
 import setAuthToken from '../utils/setAuthToken';
@@ -63,7 +63,6 @@ export const registerUser = ({ name, email, password }) => async dispatch => {
     if (errors) {
       errors.forEach(error => dispatch(setAlert(error.msg, 'danger')))
     }
-
     dispatch({
       type: REGISTER_FAIL
     })
@@ -102,8 +101,6 @@ export const loginUser = (email, password) => async dispatch => {
 
     const errors = err.response.data.errors;
 
-    console.log(errors)
-
     if (errors) {
       errors.forEach(error => dispatch(setAlert(error.msg, 'danger')))
     }
@@ -115,6 +112,7 @@ export const loginUser = (email, password) => async dispatch => {
 }
 
 export const logoutUser = () => dispatch => {
+  dispatch({ type: CLEAR_PROFILE })
   dispatch({
     type: LOGOUT
   })
