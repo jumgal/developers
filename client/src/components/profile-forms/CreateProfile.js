@@ -48,8 +48,6 @@ const CreateProfile = ({ createNewProfile, history }) => {
     setProfileFields({ ...profileFields, [e.target.name]: e.target.value })
   }
 
-
-
   const handleProfileSubmit = e => {
 
     e.preventDefault()
