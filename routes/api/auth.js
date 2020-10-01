@@ -13,8 +13,8 @@ const router = express.Router();
 
 
 // route      GET api/auth
-// desc       Test route
-// @access    Public
+// desc       get user
+// @access    Private
 
 router.get('/', auth, async (req, res) => {
 
